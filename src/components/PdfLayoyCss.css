@@ -1,0 +1,27 @@
+/* Add this to your PdfLayout styles (in a CSS file or inline styles) */
+
+.pdf-content {
+    background-color: white; /* Ensure white background */
+    color: black; /* Ensure text is black */
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.pdf-header {
+    text-align: center;
+}
+
+.pdf-header img {
+    max-width: 100px;
+}
+
+.pdf-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.pdf-footer {
+    text-align: center;
+    margin-top: 30px;
+}
