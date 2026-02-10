@@ -291,8 +291,8 @@ import html2pdf from "html2pdf.js";
 import logo from "../components/logo.png";
 
 const PdfLayout = forwardRef(({ formData }, ref) => {
-    // Generate dynamic invoice number with sequential format
-    const [invoiceCounter, setInvoiceCounter] = useState(1);
+    // Generate dynamic invoice number with sequential format (starting from 249)
+    const [invoiceCounter, setInvoiceCounter] = useState(249);
     const currentYear = new Date().getFullYear();
     const nextYear = currentYear + 1;
     const financialYear = `${currentYear}-${nextYear.toString().slice(2)}`;
@@ -424,7 +424,7 @@ const grandTotals = (formData?.items || []).reduce((acc, item) => {
                 {/* Invoice Details */}
                 <div style={pdfStyles.detailsRow}>
                     <div style={pdfStyles.invoiceColumn}>
-                        <p style={pdfStyles.detailItem}><strong>Invoice No:</strong>WBPL/2026-27/246</p>
+                        <p style={pdfStyles.detailItem}><strong>Invoice No:</strong> {invoiceNumber}</p>
                         <p style={pdfStyles.detailItem}><strong>Invoice Date:</strong> {formatField(formData.date)}</p>
                         <p style={pdfStyles.detailItem}><strong>Due Date:</strong> {formatField(formData.adate)}</p>
                     </div>
