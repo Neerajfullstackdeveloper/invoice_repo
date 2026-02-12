@@ -293,8 +293,8 @@ import logo from "../components/logo.png";
 const PdfLayout = forwardRef(({ formData }, ref) => {
     // Generate dynamic invoice number with sequential format (starting from 249)
     const [invoiceCounter, setInvoiceCounter] = useState(249);
-    const currentYear = new Date().getFullYear();
-    const nextYear = currentYear + 1;
+    const currentYear = 2025;
+    const nextYear = 2026;
     const financialYear = `${currentYear}-${nextYear.toString().slice(2)}`;
     const invoiceNumber = `WBPL/${financialYear}/${invoiceCounter.toString().padStart(3, '0')}`;
 
