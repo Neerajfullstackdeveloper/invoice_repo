@@ -290,9 +290,15 @@ import React, { forwardRef, useImperativeHandle, useState } from "react";
 import html2pdf from "html2pdf.js";
 import logo from "../components/logo.png";
 
+const INVOICE_COUNTER_KEY = "wbpl_invoice_counter_2025-26";
+const getStoredInvoiceCounter = () => {
+    const stored = localStorage.getItem(INVOICE_COUNTER_KEY);
+    return stored !== null ? parseInt(stored, 10) : 267;
+};
+
 const PdfLayout = forwardRef(({ formData }, ref) => {
-    // Generate dynamic invoice number with sequential format (starting from 249)
-    const [invoiceCounter, setInvoiceCounter] = useState(249);
+    // Invoice number starts at 267 and persists across refresh via localStorage
+    const [invoiceCounter, setInvoiceCounter] = useState(getStoredInvoiceCounter);
     const currentYear = 2025;
     const nextYear = 2026;
     const financialYear = `${currentYear}-${nextYear.toString().slice(2)}`;
@@ -392,8 +398,10 @@ const grandTotals = (formData?.items || []).reduce((acc, item) => {
             };
 
             html2pdf().set(options).from(element).save();
-            // Increment invoice counter after successful download
-            setInvoiceCounter(prev => prev + 1);
+            // Increment and persist invoice counter so it survives refresh
+            const nextCounter = invoiceCounter + 1;
+            setInvoiceCounter(nextCounter);
+            localStorage.setItem(INVOICE_COUNTER_KEY, String(nextCounter));
         } catch (error) {
             console.error("Error generating PDF:", error);
         }
