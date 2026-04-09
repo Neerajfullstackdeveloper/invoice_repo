@@ -4,11 +4,17 @@
 
 // const PdfLayout = forwardRef(({ formData }, ref) => {
 //     // Generate dynamic invoice number with sequential format
+<<<<<<< HEAD
 //     const [invoiceCounter, setInvoiceCounter] = useState(1);
 //     const currentYear = new Date().getFullYear();
 //     const nextYear = currentYear + 1;
 //     const financialYear = `${currentYear}-${nextYear.toString().slice(2)}`;
 //     const invoiceNumber = `WBPL/${financialYear}/${invoiceCounter.toString().padStart(3, '0')}`;
+=======
+//     const [invoiceCounter, setInvoiceCounter] = useState(0);
+//     const financialYear = `2026-27`;
+//     const invoiceNumber = `WBPL/${financialYear}/${invoiceCounter.toString().padStart(2, '0')}`;
+>>>>>>> 188c27b (new changes)
 
 //     // Calculate item totals
 //     const calculateItemTotals = (item) => {
@@ -290,6 +296,7 @@ import React, { forwardRef, useImperativeHandle, useState } from "react";
 import html2pdf from "html2pdf.js";
 import logo from "../components/logo.png";
 
+<<<<<<< HEAD
 const INVOICE_COUNTER_KEY = "wbpl_invoice_counter_2025-26";
 const getStoredInvoiceCounter = () => {
     const stored = localStorage.getItem(INVOICE_COUNTER_KEY);
@@ -303,6 +310,13 @@ const PdfLayout = forwardRef(({ formData }, ref) => {
     const nextYear = 2026;
     const financialYear = `${currentYear}-${nextYear.toString().slice(2)}`;
     const invoiceNumber = `WBPL/${financialYear}/${invoiceCounter.toString().padStart(3, '0')}`;
+=======
+const PdfLayout = forwardRef(({ formData }, ref) => {
+    // Generate dynamic invoice number with sequential format
+    const [invoiceCounter, setInvoiceCounter] = useState(0);
+    const financialYear = `2026-27`;
+    const invoiceNumber = `WBPL/${financialYear}/${invoiceCounter.toString().padStart(2, '0')}`;
+>>>>>>> 188c27b (new changes)
 
     // Calculate item totals
     // const calculateItemTotals = (item) => {
@@ -346,10 +360,16 @@ const PdfLayout = forwardRef(({ formData }, ref) => {
 
 const calculateItemTotals = (item) => {
     const amount = parseFloat(item.amount) || 0;
+<<<<<<< HEAD
     // Use rates from form (item.igst, item.cgst, item.sgst); fallback to 0
     const igstRate = parseFloat(String(item.igst || '').replace('%', '')) || 0;
     const cgstRate = parseFloat(String(item.cgst || '').replace('%', '')) || 0;
     const sgstRate = parseFloat(String(item.sgst || '').replace('%', '')) || 0;
+=======
+    const igstRate = 18;  // IGST 18%
+    const cgstRate = 0;   // CGST 0%
+    const sgstRate = 0;   // SGST 0%
+>>>>>>> 188c27b (new changes)
 
     const igstAmount = amount * (igstRate / 100);
     const cgstAmount = amount * (cgstRate / 100);
@@ -365,6 +385,7 @@ const calculateItemTotals = (item) => {
     };
 };
 
+<<<<<<< HEAD
 // Grand totals: sum item totals so CGST/SGST amounts show correctly in PDF
 const grandTotals = (formData?.items || []).reduce((acc, item) => {
     const itemTotals = calculateItemTotals(item);
@@ -374,6 +395,25 @@ const grandTotals = (formData?.items || []).reduce((acc, item) => {
         cgstAmount: acc.cgstAmount + itemTotals.cgstAmount,
         sgstAmount: acc.sgstAmount + itemTotals.sgstAmount,
         total: acc.total + itemTotals.total
+=======
+
+
+const grandTotals = formData.items.reduce((acc, item) => {
+    const itemTotals = calculateItemTotals(item);
+
+    // IGST = 18%, CGST = 0%, SGST = 0%
+    const igstAmount = itemTotals.amount * 0.18;
+    const cgstAmount = 0;
+    const sgstAmount = 0;
+    const total = itemTotals.amount + igstAmount;
+
+    return {
+        amount: acc.amount + itemTotals.amount,
+        igstAmount: acc.igstAmount + igstAmount,
+        cgstAmount: acc.cgstAmount + cgstAmount,
+        sgstAmount: acc.sgstAmount + sgstAmount,
+        total: acc.total + total
+>>>>>>> 188c27b (new changes)
     };
 }, { amount: 0, igstAmount: 0, cgstAmount: 0, sgstAmount: 0, total: 0 });
 
@@ -398,10 +438,15 @@ const grandTotals = (formData?.items || []).reduce((acc, item) => {
             };
 
             html2pdf().set(options).from(element).save();
+<<<<<<< HEAD
             // Increment and persist invoice counter so it survives refresh
             const nextCounter = invoiceCounter + 1;
             setInvoiceCounter(nextCounter);
             localStorage.setItem(INVOICE_COUNTER_KEY, String(nextCounter));
+=======
+            // Increment invoice counter after successful download
+            setInvoiceCounter(prev => prev + 1);
+>>>>>>> 188c27b (new changes)
         } catch (error) {
             console.error("Error generating PDF:", error);
         }
@@ -414,12 +459,15 @@ const grandTotals = (formData?.items || []).reduce((acc, item) => {
     // Helper to format empty fields
     const formatField = (value) => value || '-';
 
+<<<<<<< HEAD
     // Display rates from first item for headers/totals (so PDF shows actual %)
     const firstItem = formData.items[0];
     const igstLabel = firstItem ? (parseFloat(String(firstItem.igst || '').replace('%', '')) || 0) : 0;
     const cgstLabel = firstItem ? (parseFloat(String(firstItem.cgst || '').replace('%', '')) || 0) : 0;
     const sgstLabel = firstItem ? (parseFloat(String(firstItem.sgst || '').replace('%', '')) || 0) : 0;
 
+=======
+>>>>>>> 188c27b (new changes)
     return (
         <div style={{ display: "none" }}>
             <div id="pdf-content" style={pdfStyles.content}>
@@ -465,9 +513,15 @@ const grandTotals = (formData?.items || []).reduce((acc, item) => {
                             <th style={pdfStyles.tableHeader}>HSN/SAC</th>
                             <th style={pdfStyles.tableHeader}>Qty</th>
                             <th style={pdfStyles.tableHeader}>Amount (₹)</th>
+<<<<<<< HEAD
                             <th style={pdfStyles.tableHeader}>IGST ({igstLabel}%)</th>
                             <th style={pdfStyles.tableHeader}>CGST ({cgstLabel}%)</th>
                             <th style={pdfStyles.tableHeader}>SGST ({sgstLabel}%)</th>
+=======
+                            <th style={pdfStyles.tableHeader}>IGST (18%)</th>
+                            <th style={pdfStyles.tableHeader}>CGST (0%)</th>
+                            <th style={pdfStyles.tableHeader}>SGST (0%)</th>
+>>>>>>> 188c27b (new changes)
                             <th style={pdfStyles.tableHeader}>Total (₹)</th>
                             <th style={pdfStyles.tableHeader}>Tenure</th>
                         </tr>
@@ -500,6 +554,7 @@ const grandTotals = (formData?.items || []).reduce((acc, item) => {
                         <div style={pdfStyles.totalValue}>₹ {grandTotals.amount.toFixed(2)}</div>
                     </div>
                     <div style={pdfStyles.totalRow}>
+<<<<<<< HEAD
                         <div style={pdfStyles.totalLabel}>IGST ({igstLabel}%):</div>
                         <div style={pdfStyles.totalValue}>₹ {grandTotals.igstAmount.toFixed(2)}</div>
                     </div>
@@ -509,6 +564,17 @@ const grandTotals = (formData?.items || []).reduce((acc, item) => {
                     </div>
                     <div style={pdfStyles.totalRow}>
                         <div style={pdfStyles.totalLabel}>SGST ({sgstLabel}%):</div>
+=======
+                        <div style={pdfStyles.totalLabel}>IGST (18%):</div>
+                        <div style={pdfStyles.totalValue}>₹ {grandTotals.igstAmount.toFixed(2)}</div>
+                    </div>
+                    <div style={pdfStyles.totalRow}>
+                        <div style={pdfStyles.totalLabel}>CGST (0%):</div>
+                        <div style={pdfStyles.totalValue}>₹ {grandTotals.cgstAmount.toFixed(2)}</div>
+                    </div>
+                    <div style={pdfStyles.totalRow}>
+                        <div style={pdfStyles.totalLabel}>SGST (0%):</div>
+>>>>>>> 188c27b (new changes)
                         <div style={pdfStyles.totalValue}>₹ {grandTotals.sgstAmount.toFixed(2)}</div>
                     </div>
                     <div style={{ ...pdfStyles.totalRow, ...pdfStyles.grandTotal }}>

@@ -498,16 +498,17 @@ const OurFormComponent = () => {
                                 required
                             />
 
-                            <label>Amount:</label>
-                            <input
-                                type="number"
-                                name="amount"
-                                placeholder="amount"
-                                value={item.amount}
-                                onChange={(e) => handleItemChange(index, e)}
-                                min="1"
-                                required
-                            />
+<label>Amount:</label>
+<input
+    type="number"
+    name="amount"
+    placeholder="amount"
+    value={item.amount}
+    onChange={(e) => handleItemChange(index, e)}
+    min="0"
+    step="0.01"
+    required
+/>
 
                             {formData.items.length > 1 && (
                                 <button
