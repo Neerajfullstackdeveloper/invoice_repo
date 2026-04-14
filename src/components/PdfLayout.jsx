@@ -1,10 +1,17 @@
-﻿import React, { forwardRef, useImperativeHandle, useState } from "react";
+﻿import React, { forwardRef, useImperativeHandle } from "react";
 import html2pdf from "html2pdf.js";
 import logo from "../components/logo.png";
 
 const PdfLayout = forwardRef(({ formData }, ref) => {
-    const [invoiceCounter, setInvoiceCounter] = useState(0);
     const financialYear = "2026-27";
+    
+    // Get invoice counter from localStorage (persists across page refreshes)
+    const getInvoiceCounter = () => {
+        const counter = localStorage.getItem('invoiceCounter');
+        return counter ? parseInt(counter, 10) : 0;
+    };
+    
+    const invoiceCounter = getInvoiceCounter();
     const invoiceNumber = `WBPL/${financialYear}/${invoiceCounter.toString().padStart(2, '0')}`;
     const items = formData?.items || [];
 
@@ -60,7 +67,9 @@ const PdfLayout = forwardRef(({ formData }, ref) => {
             };
 
             html2pdf().set(options).from(element).save();
-            setInvoiceCounter((prev) => prev + 1);
+            // Increment counter in localStorage
+            const currentCounter = parseInt(localStorage.getItem('invoiceCounter') || '0', 10);
+            localStorage.setItem('invoiceCounter', (currentCounter + 1).toString());
         } catch (error) {
             console.error("Error generating PDF:", error);
         }
